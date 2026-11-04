@@ -1,0 +1,334 @@
+:root {
+  --ink: #0f2233;
+  --deep-water: #1b3a52;
+  --paper: #e9efec;
+  --water: #b7d1d6;
+  --steel: #4a6070;
+  --muted: #4d6475;
+  --flag: #f0b429;
+  --hit: #d4402b;
+  --valid: #6fcf97;
+  --invalid: #e8877a;
+  --sunk: #2b3f50;
+
+  --font-display: 'Big Shoulders Display', Impact, 'Arial Narrow', sans-serif;
+  --font-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --cell: clamp(1.5rem, 6.6vw, 2.4rem);
+  --radius: 6px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 1.5rem 1rem 3rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  text-align: center;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.8rem, 9vw, 4.5rem);
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+  letter-spacing: 0.02em;
+}
+
+/* --- Status line --- */
+
+#message {
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--deep-water);
+  border-left: 4px solid var(--flag);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  text-align: left;
+}
+
+#message:empty {
+  display: none;
+}
+
+/* --- Buttons --- */
+
+button {
+  padding: 0.7rem 1.2rem;
+  border: 2px solid var(--paper);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--paper);
+  font: 700 1.1rem/1 var(--font-display);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: rgba(233, 239, 236, 0.12);
+}
+
+button.primary {
+  background: var(--flag);
+  border-color: var(--flag);
+  color: var(--ink);
+}
+
+button.primary:hover:not(:disabled) {
+  background: #f6c85a;
+  border-color: #f6c85a;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--paper);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button {
+    transition: background-color 0.15s;
+  }
+}
+
+/* --- Menu and pass screen --- */
+
+#menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2rem 0;
+}
+
+#pass-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  background: var(--ink);
+}
+
+#pass-screen h2 {
+  font-size: clamp(2rem, 7vw, 3.2rem);
+}
+
+#pass-screen p {
+  max-width: 26rem;
+  margin: 0;
+}
+
+/* --- Placement --- */
+
+#placement-panel {
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+  padding: 1rem;
+  background: var(--deep-water);
+  border-radius: var(--radius);
+}
+
+#dock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  min-height: calc(var(--cell) + 0.5rem);
+  margin-bottom: 1rem;
+}
+
+#placement-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.dock-ship {
+  display: flex;
+  background: var(--steel);
+  border-radius: 999px;
+  cursor: grab;
+}
+
+.dock-ship.vertical {
+  flex-direction: column;
+}
+
+.dock-segment {
+  width: var(--cell);
+  height: calc(var(--cell) * 0.68);
+}
+
+.dock-ship.vertical .dock-segment {
+  width: calc(var(--cell) * 0.68);
+  height: var(--cell);
+}
+
+/* --- Boards --- */
+
+#game-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+#game-area section {
+  padding: 1rem;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius);
+  text-align: left;
+}
+
+#game-area h2 {
+  margin-bottom: 0.75rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(11, var(--cell));
+  grid-template-rows: repeat(11, var(--cell));
+  gap: 1px; /* the panel color shows through as chart gridlines */
+}
+
+.label {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.cell {
+  position: relative;
+  background: var(--water);
+}
+
+/* A hit on an enemy ship you haven't sunk yet: a plain steel marker */
+.cell.hit:not(.hull) {
+  background: var(--steel);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+
+/* Hulls: one continuous shape drawn across a ship's squares */
+.cell.hull::before {
+  content: '';
+  position: absolute;
+  background: var(--steel);
+}
+
+.cell.hull.horizontal::before {
+  inset: 16% -1px; /* the -1px bridges the gap to the next segment */
+}
+
+.cell.hull.vertical::before {
+  inset: -1px 16%;
+}
+
+.cell.hull.horizontal.bow::before {
+  left: 6%;
+  border-radius: 999px 0 0 999px;
+}
+
+.cell.hull.horizontal.stern::before {
+  right: 6%;
+  border-radius: 0 999px 999px 0;
+}
+
+.cell.hull.vertical.bow::before {
+  top: 6%;
+  border-radius: 999px 999px 0 0;
+}
+
+.cell.hull.vertical.stern::before {
+  bottom: 6%;
+  border-radius: 0 0 999px 999px;
+}
+
+.cell.hull.bow.stern::before {
+  border-radius: 999px; /* a one-square ship */
+}
+
+.cell.sunk::before {
+  background: var(--sunk);
+}
+
+/* Pegs */
+.cell.hit::after,
+.cell.sunk::after,
+.cell.miss::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cell.hit::after,
+.cell.sunk::after {
+  inset: 26%;
+  background: var(--hit);
+  box-shadow: 0 0 0 2px var(--paper);
+}
+
+.cell.miss::after {
+  inset: 36%;
+  background: var(--paper);
+  box-shadow: 0 0 0 1px var(--muted);
+}
+
+/* Aiming at the enemy board */
+#enemy-board.active .cell.empty:hover {
+  outline: 3px solid var(--flag);
+  outline-offset: -3px;
+  cursor: crosshair;
+}
+
+/* Drag-and-drop preview (placed last so it wins over cell colors) */
+.cell.preview-valid {
+  background: var(--valid);
+}
+
+.cell.preview-invalid {
+  background: var(--invalid);
+}
+
+/* --- Bottom controls --- */
+
+#controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}

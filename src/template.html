@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battleship</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Public+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>Battleship</h1>
+    <p id="message" role="status"></p>
+
+    <div id="menu" hidden>
+      <button id="play-single" class="primary" type="button">Play vs computer</button>
+      <button id="play-two" type="button">2 players (pass the device)</button>
+    </div>
+
+    <div id="pass-screen" hidden>
+      <h2 id="pass-title"></h2>
+      <p>Make sure the other player isn't looking, then press the button.</p>
+      <button id="pass-ready" class="primary" type="button"></button>
+    </div>
+
+    <div id="placement-panel" hidden>
+      <div id="dock"></div>
+      <div id="placement-controls">
+        <button id="rotate" type="button">Rotate</button>
+        <button id="randomize" type="button">Randomize</button>
+        <button id="reset" type="button">Reset</button>
+        <button id="start" class="primary" type="button" disabled>Start game</button>
+      </div>
+    </div>
+
+    <main id="game-area" hidden>
+      <section>
+        <h2 id="player-title">Your fleet</h2>
+        <div id="player-board" class="board"></div>
+      </section>
+      <section id="enemy-section">
+        <h2 id="enemy-title">Enemy waters</h2>
+        <div id="enemy-board" class="board"></div>
+      </section>
+    </main>
+
+    <div id="controls">
+      <button id="end-turn" class="primary" type="button" hidden>End turn</button>
+      <button id="new-game" type="button">New game</button>
+    </div>
+  </body>
+</html>
